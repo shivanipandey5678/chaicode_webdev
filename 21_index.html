@@ -1,0 +1,36 @@
+<!-- //indow k documnet object hamko sab chije mtlb dom ko mutate karne ke methods provide karta hai  -->
+<!-- if we want to implement ki btn  click baad kuch actions perform ho to ham kar sakte hai . on click me ek hi aat ahai to esa kar sakte hai if multiple chije ecicute karwani ho to ek function bano jisme sabhi function ko correct flow me run karo but ye best way nhi hoga -->
+ on click by defalt undefined hoti h 
+
+
+<!-- //2 onclick on same btn last wala chalega -->
+<!-- btn per addEvenetListener laga dete hai . u neeed to define type of event
+btnRef.addEventListener("clcik",function(){
+    console.log('btn clicked')
+})
+
+//event listener dono chalenge if 2,3 jitna add karna hai kar sakte ho same onclick sath nhi ho sakta tha. why bcoz of closers -->
+const buttonRef = {
+    listeners : [],
+    addEventListeners(cb){
+        this.listeners.push(cb)
+    },
+    browserMaiClick:function(){
+        for(const fn of this.listener){
+            fn()
+        }
+    }
+}
+
+bcoz of this ham multiply store kar sakte hai 
+here 1 more thing as we now with time listener array will grow and consume memory what we can do at that point it is not good practice to pass the complete defination of the function at eventlisteners. store it in some variables and pass the variable.right after adding we can remove the event listenersso that garbage collect will del it make it optimized\
+
+
+btnRef.addEventListener('click',onClickHandler);
+function onClickHandler(){
+    console.log('buttonclicked');
+    btnRef.removeEvenetListeners('click',onClickHandler)
+}
+hosting ki wajah se ham call kar pa rhe hai phle
+
+

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pink Todo List</title>
+    <style>
+      :root {
+        --bg: #ffeef7;
+        --card: #ffffff;
+        --primary: #ff85c0;
+        --accent: #ffcade;
+        --text: #5d3d6b;
+        --muted: #b16a9d;
+        --shadow: 0 16px 40px rgba(255, 107, 170, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Poppins", sans-serif;
+        background: radial-gradient(
+          circle at top left,
+          #ffdaee 0%,
+          var(--bg) 45%,
+          #f9e4f1 100%
+        );
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+      }
+
+      .todo-app {
+        width: min(100%, 420px);
+        background: var(--card);
+        border-radius: 32px;
+        box-shadow: var(--shadow);
+        padding: 32px 28px;
+      }
+
+      .todo-app h1 {
+        margin: 0 0 14px;
+        font-size: 2rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #d7479f;
+        text-align: center;
+      }
+
+      .input-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      #todoInput {
+        flex: 1;
+        border: 2px solid rgba(255, 133, 192, 0.45);
+        border-radius: 24px;
+        padding: 14px 18px;
+        font-size: 1rem;
+        outline: none;
+        transition:
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+        background: #fff0f7;
+        color: var(--text);
+      }
+
+      #todoInput:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(255, 149, 190, 0.18);
+      }
+
+      #createButton {
+        border: none;
+        border-radius: 24px;
+        padding: 14px 20px;
+        background: linear-gradient(135deg, #ff85c0, #ff5fa0);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 14px 24px rgba(255, 105, 160, 0.25);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      #createButton:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 28px rgba(255, 105, 160, 0.3);
+      }
+
+      #listContainer {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      li {
+        background: linear-gradient(180deg, #fff2fb 0%, #ffe4f3 100%);
+        border: 1px solid #f9c5e5;
+        border-radius: 22px;
+        padding: 16px 18px;
+        font-size: 1rem;
+        color: #6e3b68;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      li:hover {
+        transform: translateX(4px);
+        opacity: 0.95;
+      }
+
+      .hint {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 520px) {
+        body {
+          padding: 18px;
+        }
+
+        .todo-app {
+          padding: 24px 20px;
+        }
+
+        .input-row {
+          flex-direction: column;
+        }
+
+        #createButton {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todo-app">
+      <h1>My Pink Tasks</h1>
+      <div class="input-row">
+        <input type="text" placeholder="Add a cute task..." id="todoInput" />
+        <button id="createButton">Create</button>
+      </div>
+      <p class="hint">Click a task to remove it 💕</p>
+      <ul id="listContainer">
+        <li>Do JS</li>
+        <li>Pushup</li>
+      </ul>
+    </div>
+    <script>
+      const createButton = document.getElementById("createButton");
+      const todoInput = document.getElementById("todoInput");
+
+      const listContainer = document.getElementById("listContainer");
+      let todos1;
+      let todos = (async () => {
+        await fetch("https://dummyjson.com/todos")
+          .then((data) => data.json())
+          .then((data2) => {
+            for (const obj of data2.todos) {
+              console.log(obj);
+              const newList = document.createElement("li");
+              newList.innerText = obj.todo;
+              newList.addEventListener("click", function () {
+                newList.remove();
+              });
+              listContainer.appendChild(newList);
+            }
+          });
+      })();
+
+      createButton.addEventListener("click", function () {
+        const newList = document.createElement("li");
+        newList.addEventListener("click", function () {
+          newList.remove();
+        });
+        newList.innerText = todoInput.value;
+        listContainer.appendChild(newList);
+        todoInput.value = "";
+      });
+    </script>
+  </body>
+</html>
